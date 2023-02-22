@@ -6,33 +6,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class StudentController {
-    @Autowired
-    private StudentRepository repository;
+@RequestMapping("/student")
+public class StudentController  extends AbstractController<Student,StudentRepository>{
 
-    @PostMapping("/student")
-    public void add(@RequestBody Student student) throws Exception {
-        repository.add(student);
+}
+
+class Response<T>{
+    private String errorMessage;
+
+    private T result;
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    @PutMapping("/student")
-    public void update(@RequestBody Student student) throws Exception {
-        repository.update(student);
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
-    @DeleteMapping("/student/{id}")
-    public void deleteById(@PathVariable("id") Long id) throws Exception {
-        repository.removeById(id);
+    public T getResult() {
+        return result;
     }
 
-    @GetMapping("/student/{id}")
-    public Student findById(@PathVariable("id") Long id) throws Exception {
-        return repository.findById(id);
+    public void setResult(T result) {
+        this.result = result;
     }
-    @GetMapping("/student")
-    public List<Student> getAll() throws Exception {
-        return repository.getAll();
-    }
-
-
 }
