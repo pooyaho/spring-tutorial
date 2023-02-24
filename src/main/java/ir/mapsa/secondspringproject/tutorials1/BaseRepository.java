@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface BaseRepository<T> {
 
-    void add(T entity) throws Exception;
+    void add(T entity) throws ServiceException;
 
-    void update(T entity)throws Exception;
+    void update(T entity)throws ServiceException;
 
-    void removeById(Long id)throws Exception;
+    void removeById(Long id)throws ServiceException;
 
-    T findById(Long id)throws Exception;
+    T findById(Long id)throws ServiceException;
 
-    List<T> getAll() throws Exception;
+    List<T> getAll() throws ServiceException;
 }

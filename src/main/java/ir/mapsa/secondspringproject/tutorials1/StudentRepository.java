@@ -9,11 +9,11 @@ import java.util.List;
 @Service
 public class StudentRepository implements BaseRepository<Student> {
     @Override
-    public void add(Student student) throws Exception {
+    public void add(Student student) throws ServiceException {
         executeUpdateQuery("insert into second_student(name, family, passed_course, student_id, national_code) values (?,?,?,?,?)", student);
     }
 
-    private void executeUpdateQuery(String query,Student student) throws Exception {
+    private void executeUpdateQuery(String query,Student student) throws ServiceException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, student.getName());
@@ -26,30 +26,34 @@ public class StudentRepository implements BaseRepository<Student> {
                 }
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            throw new ServiceException("Error in creating connection",e,"database-exception");
         }
     }
 
     @Override
-    public void update(Student student) throws Exception {
+    public void update(Student student) throws ServiceException {
         executeUpdateQuery("update second_student set name=?, family=?, passed_course=?, student_id=?, national_code=?\n" +
                 "where id=?",student);
     }
 
     @Override
-    public void removeById(Long id) throws Exception {
+    public void removeById(Long id) throws ServiceException {
         if (this.findById(id) == null) {
-            throw new IllegalArgumentException();
+            throw new IdNotFoundException("student-notfound");
         }
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("delete from second_student where id=?")) {
                 statement.setLong(1, id);
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            throw new ServiceException("Error in creating connection",e,"database-exception");
         }
     }
 
     @Override
-    public Student findById(Long id) throws Exception {
+    public Student findById(Long id) throws ServiceException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from second_student where id=?")) {
 
@@ -64,6 +68,8 @@ public class StudentRepository implements BaseRepository<Student> {
                     }
                 }
             }
+        } catch (SQLException e) {
+            throw new ServiceException("Error in creating connection",e,"database-exception");
         }
     }
 
@@ -78,13 +84,17 @@ public class StudentRepository implements BaseRepository<Student> {
         return student;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/second_class", "root", null);
+    private Connection getConnection() throws ServiceException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/second_class", "root", null);
+        } catch (Exception e) {
+            throw new ServiceException("Error in creating connection",e,"database-exception");
+        }
     }
 
     @Override
-    public List<Student> getAll() throws Exception {
+    public List<Student> getAll() throws ServiceException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from second_student")) {
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -96,6 +106,8 @@ public class StudentRepository implements BaseRepository<Student> {
                     return result;
                 }
             }
+        } catch (SQLException e) {
+            throw new ServiceException("Error in creating connection",e,"database-exception");
         }
     }
 
