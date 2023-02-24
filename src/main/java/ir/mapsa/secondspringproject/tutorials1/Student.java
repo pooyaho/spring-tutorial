@@ -1,12 +1,26 @@
 package ir.mapsa.secondspringproject.tutorials1;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name="THIRD_STUDENT")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "FIRST_NAME",length = 20)
     private String name;
     private String family;
+
     private Integer passedCourse;
+    @Column(unique = true)
     private String nationalCode;
+    @Column(unique = true)
     private String studentId;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Course> courses;
 
     public Long getId() {
         return id;
@@ -54,5 +68,13 @@ public class Student {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }
