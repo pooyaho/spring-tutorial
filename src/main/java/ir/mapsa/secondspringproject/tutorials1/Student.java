@@ -6,10 +6,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "THIRD_STUDENT")
-public class Student {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Student extends AbstractEntity {
+
     @Column(name = "FIRST_NAME", length = 20)
     private String name;
     private String family;
@@ -21,16 +19,7 @@ public class Student {
     private String studentId;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Course> courses;
-    @Version
-    private Integer version;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -80,11 +69,5 @@ public class Student {
         this.courses = courses;
     }
 
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+    
 }

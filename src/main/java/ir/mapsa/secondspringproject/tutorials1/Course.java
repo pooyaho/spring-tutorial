@@ -1,31 +1,22 @@
 package ir.mapsa.secondspringproject.tutorials1;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
 @Entity
 @Table(name = "THIRD_COURSE")
-public class Course {
+public class Course extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
     private String name;
     private String topic;
     private Integer unit;
-    @Version
-    private Integer version;
     @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
     private List<Student> students;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -57,13 +48,5 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 }

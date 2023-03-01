@@ -22,7 +22,6 @@ public abstract class AbstractController<E, T extends JpaRepository<E, Long>> {
     @Transactional
     public void update(@RequestBody E e) throws Exception {
         repository.save(e);
-        repository.delete(e);
     }
 
     @DeleteMapping("/{id}")

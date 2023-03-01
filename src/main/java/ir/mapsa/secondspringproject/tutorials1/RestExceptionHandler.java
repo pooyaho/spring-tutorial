@@ -14,12 +14,14 @@ import java.util.Properties;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    private  Properties properties = new Properties();
+    private Properties properties = new Properties();
 
     @PostConstruct
     public void init() {
         try {
-            properties.load(new FileReader("/Users/pooya/projects/second-spring-project/src/main/resources/exceptions_fa_IR.properties", StandardCharsets.UTF_8));
+            properties.load(new FileReader(
+                    "/Users/pooya/projects/second-spring-project/src/main/resources/exceptions_fa_IR.properties",
+                    StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -30,6 +32,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> handleException(ServiceException exception) {
+        exception.printStackTrace();
         ExceptionResponse value = new ExceptionResponse();
         value.setError(true);
         String property = properties.getProperty(exception.getErrorCode());
@@ -47,6 +50,7 @@ public class RestExceptionHandler {
         ExceptionResponse value = new ExceptionResponse();
         value.setError(true);
         value.setMessage(properties.getProperty("unknown"));
+        exception.printStackTrace();
         return ResponseEntity.badRequest().body(value);
     }
 }
