@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="THIRD_STUDENT")
+@Table(name = "THIRD_STUDENT")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "FIRST_NAME",length = 20)
+    @Column(name = "FIRST_NAME", length = 20)
     private String name;
     private String family;
 
@@ -21,6 +21,8 @@ public class Student {
     private String studentId;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Course> courses;
+    @Version
+    private Integer version;
 
     public Long getId() {
         return id;
@@ -76,5 +78,13 @@ public class Student {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

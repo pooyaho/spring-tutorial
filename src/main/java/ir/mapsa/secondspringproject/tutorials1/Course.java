@@ -14,14 +14,17 @@ public class Course {
     private String name;
     private String topic;
     private Integer unit;
-    @ManyToMany(mappedBy = "courses")
+    @Version
+    private Integer version;
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
     private List<Student> students;
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,5 +57,13 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
