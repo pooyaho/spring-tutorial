@@ -1,5 +1,8 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.repositories;
 
+import ir.mapsa.secondspringproject.tutorials1.exceptions.IdNotFoundException;
+import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
+import ir.mapsa.secondspringproject.tutorials1.models.Student;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -8,12 +11,25 @@ import java.util.List;
 
 @Service
 public class StudentRepository implements BaseRepository<Student> {
-    @Override
-    public void add(Student student) throws ServiceException {
-        executeUpdateQuery("insert into second_student(name, family, passed_course, student_id, national_code) values (?,?,?,?,?)", student);
+    private static Student getStudent(ResultSet resultSet) throws SQLException {
+        Student student = new Student();
+        student.setStudentId(resultSet.getString("student_id"));
+        student.setFamily(resultSet.getString("family"));
+        student.setName(resultSet.getString("name"));
+        student.setNationalCode(resultSet.getString("national_code"));
+        student.setPassedCourse(resultSet.getInt("passed_course"));
+        student.setId(resultSet.getLong("id"));
+        return student;
     }
 
-    private void executeUpdateQuery(String query,Student student) throws ServiceException {
+    @Override
+    public void add(Student student) throws ServiceException {
+        executeUpdateQuery(
+                "insert into second_student(name, family, passed_course, student_id, national_code) values (?,?,?,?,?)",
+                student);
+    }
+
+    private void executeUpdateQuery(String query, Student student) throws ServiceException {
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, student.getName());
@@ -27,14 +43,15 @@ public class StudentRepository implements BaseRepository<Student> {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new ServiceException("Error in creating connection",e,"database-exception");
+            throw new ServiceException("Error in creating connection", e, "database-exception");
         }
     }
 
     @Override
     public void update(Student student) throws ServiceException {
-        executeUpdateQuery("update second_student set name=?, family=?, passed_course=?, student_id=?, national_code=?\n" +
-                "where id=?",student);
+        executeUpdateQuery(
+                "update second_student set name=?, family=?, passed_course=?, student_id=?, national_code=?\n" +
+                        "where id=?", student);
     }
 
     @Override
@@ -48,7 +65,7 @@ public class StudentRepository implements BaseRepository<Student> {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new ServiceException("Error in creating connection",e,"database-exception");
+            throw new ServiceException("Error in creating connection", e, "database-exception");
         }
     }
 
@@ -69,19 +86,8 @@ public class StudentRepository implements BaseRepository<Student> {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException("Error in creating connection",e,"database-exception");
+            throw new ServiceException("Error in creating connection", e, "database-exception");
         }
-    }
-
-    private static Student getStudent( ResultSet resultSet) throws SQLException {
-        Student student = new Student();
-        student.setStudentId(resultSet.getString("student_id"));
-        student.setFamily(resultSet.getString("family"));
-        student.setName(resultSet.getString("name"));
-        student.setNationalCode(resultSet.getString("national_code"));
-        student.setPassedCourse(resultSet.getInt("passed_course"));
-        student.setId(resultSet.getLong("id"));
-        return student;
     }
 
     private Connection getConnection() throws ServiceException {
@@ -89,7 +95,7 @@ public class StudentRepository implements BaseRepository<Student> {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/second_class", "root", null);
         } catch (Exception e) {
-            throw new ServiceException("Error in creating connection",e,"database-exception");
+            throw new ServiceException("Error in creating connection", e, "database-exception");
         }
     }
 
@@ -107,18 +113,18 @@ public class StudentRepository implements BaseRepository<Student> {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException("Error in creating connection",e,"database-exception");
+            throw new ServiceException("Error in creating connection", e, "database-exception");
         }
     }
 
     public List<Student> findByExample(Student student) {
         String query = "select * from second_student where 1=1 ";
         if (student.getId() != null) {
-            query += " AND id = "+student.getId();
+            query += " AND id = " + student.getId();
         }
 
         if (student.getStudentId() != null) {
-            query += " AND student_id = '"+ student.getStudentId()+"'";
+            query += " AND student_id = '" + student.getStudentId() + "'";
         }
         //todo implement this method
         return null;

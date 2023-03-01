@@ -1,4 +1,4 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.models;
 
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;

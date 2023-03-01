@@ -1,5 +1,6 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.controllers;
 
+import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

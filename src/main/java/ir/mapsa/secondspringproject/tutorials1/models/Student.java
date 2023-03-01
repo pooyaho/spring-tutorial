@@ -1,4 +1,4 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.models;
 
 import jakarta.persistence.*;
 
@@ -69,5 +69,5 @@ public class Student extends AbstractEntity {
         this.courses = courses;
     }
 
-    
+
 }

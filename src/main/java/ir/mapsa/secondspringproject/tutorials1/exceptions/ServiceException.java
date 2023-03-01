@@ -1,4 +1,4 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.exceptions;
 
 public class ServiceException extends Exception {
     private final String errorCode;

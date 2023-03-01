@@ -1,4 +1,4 @@
-package ir.mapsa.secondspringproject.tutorials1;
+package ir.mapsa.secondspringproject.tutorials1.exceptions;
 
 public class IdNotFoundException extends ServiceException {
     public IdNotFoundException(String errorCode) {
