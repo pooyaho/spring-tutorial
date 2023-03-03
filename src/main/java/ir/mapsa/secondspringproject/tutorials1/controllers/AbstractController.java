@@ -2,6 +2,7 @@ package ir.mapsa.secondspringproject.tutorials1.controllers;
 
 import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,10 @@ public abstract class AbstractController<E, T extends JpaRepository<E, Long>> {
     @GetMapping()
     public List<E> getAll() throws Exception {
         return repository.findAll();
+    }
+
+    @PostMapping("/search")
+    public List<E> findByExample(@RequestBody E e) {
+        return this.repository.findAll(Example.of(e));
     }
 }
