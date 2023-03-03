@@ -1,6 +1,9 @@
 package ir.mapsa.secondspringproject.tutorials1.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,6 +12,9 @@ import java.util.Date;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Data
+@EqualsAndHashCode
+@ToString
 public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,35 +26,4 @@ public abstract class AbstractEntity {
     @LastModifiedDate
     private Date lastUpdateTimestamp;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Date getInsertTimestamp() {
-        return insertTimestamp;
-    }
-
-    public void setInsertTimestamp(Date insertTimestamp) {
-        this.insertTimestamp = insertTimestamp;
-    }
-
-    public Date getLastUpdateTimestamp() {
-        return lastUpdateTimestamp;
-    }
-
-    public void setLastUpdateTimestamp(Date lastUpdateTimestamp) {
-        this.lastUpdateTimestamp = lastUpdateTimestamp;
-    }
 }

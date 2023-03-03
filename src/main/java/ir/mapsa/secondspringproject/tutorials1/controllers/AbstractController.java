@@ -2,23 +2,31 @@ package ir.mapsa.secondspringproject.tutorials1.controllers;
 
 import ir.mapsa.secondspringproject.tutorials1.converters.BaseConverter;
 import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Transactional(readOnly = true)
-public abstract class AbstractController<C extends BaseConverter<D, E>, E, D, T extends AbstractService<?, E>> {
-    @Autowired
-    private T service;
+public abstract class AbstractController<E, D> {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractController.class);
 
     @Autowired
-    private C converter;
+    private AbstractService<? extends JpaRepository<E, Long>, E> service;
+
+    @Autowired
+    private BaseConverter<D, E> converter;
 
     @PostMapping()
     @Transactional
-    public void add(@RequestBody D e) throws Exception {
+    public void add(@Valid @RequestBody D e) throws Exception {
+        LOGGER.debug("Add method called!");
+        LOGGER.info("Add arguments is :" + e);
         service.add(converter.convertDto(e));
     }
 

@@ -1,72 +1,30 @@
 package ir.mapsa.secondspringproject.tutorials1.models;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class TeacherDto extends AbstractDto {
+    @Pattern(regexp = "^([a-zA-Z]|\\s){3,20}$")
     private String name;
+    @Pattern(regexp = "^([a-zA-Z]|\\s){3,40}$")
     private String family;
+    @Pattern(regexp = "^\\d{10}$", message = "کد ملی اشتباه است")
     private String nationalCode;
+    @Past
     private Date employedDate;
+    @Pattern(regexp = "^a|b|c$")
     private String level;
 
     private EducationLevel educationLevel;
 
     private Gender gender;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
-
-    public String getNationalCode() {
-        return nationalCode;
-    }
-
-    public void setNationalCode(String nationalCode) {
-        this.nationalCode = nationalCode;
-    }
-
-    public Date getEmployedDate() {
-        return employedDate;
-    }
-
-    public void setEmployedDate(Date employedDate) {
-        this.employedDate = employedDate;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public EducationLevel getEducationLevel() {
-        return educationLevel;
-    }
-
-    public void setEducationLevel(EducationLevel educationLevel) {
-        this.educationLevel = educationLevel;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
 }
