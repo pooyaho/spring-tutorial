@@ -1,50 +1,51 @@
 package ir.mapsa.secondspringproject.tutorials1.controllers;
 
+import ir.mapsa.secondspringproject.tutorials1.converters.BaseConverter;
 import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Transactional(readOnly = true)
-public abstract class AbstractController<E, T extends JpaRepository<E, Long>> {
+public abstract class AbstractController<C extends BaseConverter<D, E>, E, D, T extends AbstractService<?, E>> {
     @Autowired
-    private T repository;
+    private T service;
+
+    @Autowired
+    private C converter;
 
     @PostMapping()
     @Transactional
-    public void add(@RequestBody E e) throws Exception {
-        repository.save(e);
+    public void add(@RequestBody D e) throws Exception {
+        service.add(converter.convertDto(e));
     }
 
     @PutMapping()
     @Transactional
-    public void update(@RequestBody E e) throws Exception {
-        repository.save(e);
+    public void update(@RequestBody D e) throws Exception {
+        service.update(converter.convertDto(e));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public void deleteById(@PathVariable("id") Long id) throws ServiceException {
-        repository.deleteById(id);
-
+        service.deleteById(id);
     }
 
     @GetMapping("/{id}")
-    public E findById(@PathVariable("id") Long id) throws Exception {
-        return repository.findById(id).get();
+    public D findById(@PathVariable("id") Long id) throws Exception {
+        return converter.convertEntity(service.findById(id).get());
     }
 
     @GetMapping()
-    public List<E> getAll() throws Exception {
-        return repository.findAll();
+    public List<D> getAll() throws Exception {
+        return converter.convertEntity(service.getAll());
     }
 
     @PostMapping("/search")
-    public List<E> findByExample(@RequestBody E e) {
-        return this.repository.findAll(Example.of(e));
+    public List<D> findByExample(@RequestBody D e) {
+        return converter.convertEntity(this.service.findByExample(converter.convertDto(e)));
     }
 }
