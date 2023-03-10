@@ -1,16 +1,16 @@
 package ir.mapsa.secondspringproject.tutorials1.controllers;
 
 import ir.mapsa.secondspringproject.tutorials1.exceptions.ServiceException;
+import ir.mapsa.secondspringproject.tutorials1.repositories.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractService<R extends JpaRepository<E, Long>, E> {
+public abstract class AbstractService<R extends BaseRepository<E, Long>, E> {
     @Autowired
-    private R repository;
+    protected R repository;
 
     public void add(E e) throws Exception {
         repository.save(e);

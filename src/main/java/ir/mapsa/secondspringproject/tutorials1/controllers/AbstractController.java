@@ -25,8 +25,8 @@ public abstract class AbstractController<E, D> {
     @PostMapping()
     @Transactional
     public void add(@Valid @RequestBody D e) throws Exception {
-        LOGGER.debug("Add method called!");
-        LOGGER.info("Add arguments is :" + e);
+//        LOGGER.debug("Add method called!");
+//        LOGGER.info("Add arguments is :" + e);
         service.add(converter.convertDto(e));
     }
 

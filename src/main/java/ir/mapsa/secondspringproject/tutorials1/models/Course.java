@@ -4,11 +4,17 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "THIRD_COURSE")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course extends AbstractEntity {
 
     private String name;

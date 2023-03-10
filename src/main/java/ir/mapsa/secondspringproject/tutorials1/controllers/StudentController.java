@@ -1,7 +1,12 @@
 package ir.mapsa.secondspringproject.tutorials1.controllers;
 
-//@RestController
-//@RequestMapping("/student")
-//public class StudentController extends AbstractController<Student, StudentDto> {
-//
-//}
+import ir.mapsa.secondspringproject.tutorials1.models.Student;
+import ir.mapsa.secondspringproject.tutorials1.models.StudentDto;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/student")
+public class StudentController extends AbstractController<Student, StudentDto> {
+
+}
