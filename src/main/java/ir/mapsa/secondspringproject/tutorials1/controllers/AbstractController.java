@@ -48,8 +48,9 @@ public abstract class AbstractController<E, D> {
     }
 
     @GetMapping()
-    public List<D> getAll() throws Exception {
-        return converter.convertEntity(service.getAll());
+    public List<D> getAll(@RequestParam("pageIndex") int pageIndex, @RequestParam("pageSize") int pageSize)
+            throws Exception {
+        return converter.convertEntity(service.getAll(pageIndex, pageSize));
     }
 
     @PostMapping("/search")

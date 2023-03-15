@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Course extends AbstractEntity {
-
     private String name;
     private String topic;
     private Integer unit;

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TeacherService extends AbstractService<TeacherRepository, TeacherEntity> {
+
 }
