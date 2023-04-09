@@ -2,7 +2,6 @@ package ir.mapsa.secondspringproject.tutorials1.services;
 
 import ir.mapsa.secondspringproject.tutorials1.models.StudentDocument;
 import ir.mapsa.secondspringproject.tutorials1.repositories.StudentMongoRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ public class StudentMongoTest {
     @Autowired
     private StudentMongoRepository repository;
 
-    @PostConstruct
+    //    @PostConstruct
     public void init() {
         StudentDocument document = new StudentDocument();
 
