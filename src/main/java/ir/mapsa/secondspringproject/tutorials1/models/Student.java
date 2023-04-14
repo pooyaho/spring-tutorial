@@ -24,7 +24,7 @@ public class Student extends AbstractEntity {
     private String nationalCode;
     @Column(unique = true)
     private String studentId;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Course> courses;
 
 }

@@ -82,3 +82,101 @@ db.getSiblingDB("test").getCollection("studentDocument").find({"studentId": {$ni
 db.studentDocument.updateMany({"family": {"$eq": "Alavi"}}, {"$unset": {"fatherName": ""}})
 db.studentDocument.createIndex({"name": 1}, {unique: true})
 db.studentDocument.getIndexes()
+
+db.student_collection.insertMany([
+    {"name": "Student 1", "_id": 1},
+    {"name": "Student 2", "_id": 2},
+    {"name": "Student 3", "_id": 3}
+]);
+
+db.course_collection.insertMany([
+    {"name": "Course 1", "_id": 1},
+    {"name": "Course 2", "_id": 2},
+    {"name": "Course 3", "_id": 3}
+]);
+
+db.st_co.drop();
+
+db.st_co.insertMany([
+    {"st_id": 1, "co_id": 1},
+    {"st_id": 1, "co_id": 2},
+    {"st_id": 2, "co_id": 1},
+    {"st_id": 3, "co_id": 2}
+]);
+
+db.getSiblingDB("second_class").getCollection("course_collection").aggregate([
+    {
+        $project: {"cc": "$$ROOT", "_id": 0}
+    },
+    {
+        $lookup: {
+            localField: "cc._id",
+            from: "st_co",
+            foreignField: "co_id",
+            as: "st_co"
+        }
+    },
+    {
+        $unwind: {
+            path: "$st_co",
+            preserveNullAndEmptyArrays: false
+        }
+    },
+    {
+        $project: {"_id": "$cc._id", "co_id": "$st_co.co_id"}
+    }
+]);
+let courseIds = [];
+db.st_co.find({}, {"_id": 0, "st_id": 0}).forEach((item) => {
+    courseIds.push(item.co_id)
+})
+print(courseIds)
+db.getSiblingDB("second_class").getCollection("course_collection").find({"_id": {$nin: courseIds}})
+
+for (let i = 4; i <= 100; i++) {
+    if (i % 3 === 1) {
+        for (let j = 1; j < 30; j++) {
+            db.st_co.insertMany([
+                {"st_id": i, "co_id": j},
+            ]);
+        }
+    }
+}
+
+db.student_collection.find({})
+
+
+db.getSiblingDB("second_class").getCollection("student_collection").aggregate([
+    {
+        $project: {"s": "$$ROOT", "_id": 0}
+    },
+    {
+        $lookup: {
+            localField: "s._id",
+            from: "st_co",
+            foreignField: "st_id",
+            as: "sc"
+        }
+    },
+    {
+        $unwind: {
+            path: "$sc",
+            preserveNullAndEmptyArrays: false
+        }
+    },
+    {
+        $group: {
+            _id: {"s᎐_id": "$s._id"},
+            "count": {$sum: 1}
+        }
+    },
+    {
+        $match: {$expr: {$gt: ["$count", 20]}}
+    },
+    {
+        $sort: {"_id.s᎐_id": 1}
+    },
+    {
+        $project: {"_id": "$_id.s᎐_id", "count(*)": "$count"}
+    }
+])
