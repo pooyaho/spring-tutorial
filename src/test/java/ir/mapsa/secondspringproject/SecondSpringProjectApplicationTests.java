@@ -3,7 +3,6 @@ package ir.mapsa.secondspringproject;
 import ir.mapsa.secondspringproject.tutorials1.models.Student;
 import ir.mapsa.secondspringproject.tutorials1.repositories.StudentRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,11 +31,11 @@ class SecondSpringProjectApplicationTests {
 //    @Autowired
 //    private TestEntityManager entityManager;
 
-    @BeforeEach
-    @Transactional
-    @Rollback(false)
+    //    @BeforeAll
+//    @Transactional
+//    @Rollback(false)
     public void init() {
-        this.studentRepository.deleteAll();
+//        this.studentRepository.deleteAll();
         Student student = Student.builder()
 
                 .family("Alavi")
@@ -60,6 +59,17 @@ class SecondSpringProjectApplicationTests {
 //                .nationalCode("1234567")
 //                .name("Ali")
 //                .build());
+        Student student = Student.builder()
+
+                .family("Alavi")
+
+                .nationalCode("1234567")
+                .studentId("1234567")
+                .name("Ali")
+                .build();
+        student.setId(1L);
+        this.studentRepository.save(student);
+        this.studentRepository.deleteAll();
         List<Student> all = this.studentRepository.findAll();
         Assertions.assertThat(all).size().isEqualTo(1);
     }
