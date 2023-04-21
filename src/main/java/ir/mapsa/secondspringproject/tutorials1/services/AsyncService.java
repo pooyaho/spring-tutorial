@@ -1,5 +1,7 @@
 package ir.mapsa.secondspringproject.tutorials1.services;
 
+import ir.mapsa.secondspringproject.tutorials1.repositories.StudentRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,14 @@ public class AsyncService {
 
     @Autowired
     private ShaparakService shaparakService;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @PostConstruct
+    public void init() {
+        System.out.println(studentRepository.findAll());
+    }
 
     @Async
     public CompletableFuture<String> doSomething(int i) {
