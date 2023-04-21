@@ -1,13 +1,16 @@
 package ir.mapsa.secondspringproject.tutorials1.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
 @Service
 public class AsyncService {
+
+    @Autowired
+    private ShaparakService shaparakService;
 
     @Async
     public CompletableFuture<String> doSomething(int i) {
@@ -23,7 +26,7 @@ public class AsyncService {
         }
     }
 
-    @Scheduled(cron = "*/5 * * * * *")
+    //    @Scheduled(cron = "*/5 * * * * *")
     public void doSomethingScheduled() {
         if (System.currentTimeMillis() % 2 == 0) {
             throw new IllegalStateException();
